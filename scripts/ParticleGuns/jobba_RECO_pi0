@@ -1,0 +1,24 @@
+#!/bin/bash
+
+echo SWITCH OFF DISPLAY
+export DISPLAY=
+echo DISPLAY = $DISPLAY
+
+cd /afs/cern.ch/user/d/donega/work/CMSSW_6_1_0/test
+eval `scramv1 runtime -sh`
+
+cmsRun SinglePi0_cfi_py_RAW2DIGI_RECO.py $1 > output_$1.log
+
+echo "SETTING UP EOS"
+
+source /afs/cern.ch/project/eos/installation/cms/etc/setup.sh
+
+echo "COPYING FILES"
+
+xrdcp SinglePi0_cfi_py_RAW2DIGI_RECO_$1.root root://eoscms//eos/cms/store/user/donega/ParticleGun610/Pi0/RECO/SinglePi0_cfi_py_RAW2DIGI_RECO_$1.root
+xrdcp output_$1.log root://eoscms//eos/cms/store/user/donega/ParticleGun610/Pi0/logs/RECO/output_$1.log
+
+rm SinglePi0_cfi_py_RAW2DIGI_RECO_$1.root
+rm output_$1.log
+
+echo "DONE"

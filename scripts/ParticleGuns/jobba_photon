@@ -1,0 +1,23 @@
+#!/bin/bash
+
+echo SWITCH OFF DISPLAY
+export DISPLAY=
+echo DISPLAY = $DISPLAY
+
+cd /afs/cern.ch/user/d/donega/work/CMSSW_6_1_0/test
+eval `scramv1 runtime -sh`
+
+cmsRun SinglePhoton_cfi_py_GEN_SIM_DIGI_L1_DIGI2RAW_HLT.py $1 > output_$1.log
+
+echo "SETTING UP EOS"
+
+source /afs/cern.ch/project/eos/installation/cms/etc/setup.sh
+
+echo "COPYING FILES"
+xrdcp SinglePhoton_cfi_py_GEN_SIM_DIGI_L1_DIGI2RAW_HLT_$1.root root://eoscms//eos/cms/store/user/donega/ParticleGun610/Photon/SinglePhoton_cfi_py_GEN_SIM_DIGI_L1_DIGI2RAW_HLT_$1.root
+xrdcp output_$1.log root://eoscms//eos/cms/store/user/donega/ParticleGun610/Photon/logs/output_$1.log
+
+rm SinglePhoton_cfi_py_GEN_SIM_DIGI_L1_DIGI2RAW_HLT_$1.root
+rm output_$1.log
+
+echo "DONE"
