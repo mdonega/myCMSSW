@@ -1,0 +1,2 @@
+#!/bin/bash
+for i in `seq 0 100`; do bsub -q 8nh "jobba_photon $i"; done
