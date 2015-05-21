@@ -1,0 +1,44 @@
+
+20015-05-21
+
+Scripts used to produce the double photon gun used to train the energy regression in the 250-5000 GeV range.
+To avoid excessive memory usage run separately the GENSIM and the RECO steps.
+
+1) First setup the release, disable the leading edge recovery (patch from emanuele), get the gun fragment
+
+	#!/bin/bash
+	source  /afs/cern.ch/cms/cmsset_default.sh
+	export SCRAM_ARCH=slc6_amd64_gcc491
+	if [ -r CMSSW_7_4_0/src ] ; then
+	 echo release CMSSW_7_4_0 already exists
+	 else
+	 scram p CMSSW CMSSW_7_4_0
+	 fi
+	 cd CMSSW_7_4_0/src
+	 eval `scram runtime -sh`
+	
+	# disable the LE recovery
+	git cms-init
+	git cms-addpkg RecoLocalCalo/EcalRecProducers
+	git cms-merge-topic emanueledimarco:disable_LErecovery_740
+	
+	mkdir -p  Configuration/GenProduction/python/
+	cp ../../EGM-RunIIWinter15GS-00004-fragment.py ./Configuration/GenProduction/python/
+	
+	#curl -s --insecure https://cms-pdmv.cern.ch/mcm/public/restapi/requests/get_fragment/EGM-RunIIWinter15GS-00004 --retry 2 --create-dirs -o Configuration/GenProduction/python/EGM-RunIIWinter15GS-00004-fragment.py
+	#[ -s Configuration/GenProduction/python/EGM-RunIIWinter15GS-00004-fragment.py ] || exit $?;
+	
+	scram b -j 8
+	
+2) >./gun_stepGENSIM.py
+   --> produces step_GENSIM.py
+
+3) crab submit -c crabConfig_DoublePhotonGun_pT250-5000_GENSIM.py
+   crab status
+
+4) gun_stepRECO.py
+   -->produces step_RECO.py
+
+5) crab submit crabConfig_DoublePhotonGun_pT250-5000_RECO.py
+   crab status
+
