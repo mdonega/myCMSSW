@@ -1,12 +1,32 @@
 
-Some instructions to run cmsRun (in this case for GEN) on lxbatch:
 
-Files:
+Some instructions to run cmsRun (in this case for GEN) on lxbatch
+
+--------------------------------------------------------------------------------
+
+Files description:
 
 jobba.sh                           : steering script (takes care of: cmsenv, export the autentification, sets the output names used by the EGM-RunIIWinter15GS-00004_1_cfg.py)
 EGM-RunIIWinter15GS-00004_1_cfg.py : example file to generate a particle gun with PU (takes care of the random number seeds and output naming)
 run_jobba.sh                       : set the queues and submit the jobs
 
+--------------------------------------------------------------------------------
+
+BEFORE YOU START YOU NEED:
+- storage space on eos
+- a valid proxy:
+  > voms-proxy-init --voms cms --valid 168:00
+  You should get something like:
+      	[mdonega@lxplus0012] ~/work >voms-proxy-init --voms cms --valid 168:00
+        Enter GRID pass phrase for this identity:
+	Contacting lcg-voms2.cern.ch:15002 [/DC=ch/DC=cern/OU=computers/CN=lcg-voms2.cern.ch] "cms"...
+	Remote VOMS server contacted succesfully.
+        Created proxy in /tmp/x509up_u9880.
+
+  Then Copy /tmp/x509up_u9880 in your home
+  > cp -p /tmp/x509up_u9880 ~/.
+
+--------------------------------------------------------------------------------
 
 First setup the release you need
 > cmsrel CMSSW_7_4_0
