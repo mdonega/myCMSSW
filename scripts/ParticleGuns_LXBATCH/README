@@ -40,7 +40,16 @@ If you got to this point you can submit the jobs on lxbatch:
 Modify  run_jobba.sh:
 - set the queue you want 
 - set the number of jobs you want here: e.g. 1000 --> for i in `seq 1 1000`; 
+- set your the email address (ideally you should receive a mail once the job is done... For some reasons I never get the mail)
 
 Finally
 > run_jobba.sh
+
+To monitor your jobs you can use command line tools:
+> bjobs
+> bpeek [-f] [-q queue_name | -m host_name | -J job_name | job_ID | "job_ID[index_list]"]
+
+Or webbased tools:  (look for your username)
+http://dashb-cms-job.cern.ch/dashboard/templates/task-analysis/#user=default&refresh=0&table=Mains&p=1&records=25&activemenu=2&pattern=&task=&from=&till=&timerange=lastWeek
+
 
