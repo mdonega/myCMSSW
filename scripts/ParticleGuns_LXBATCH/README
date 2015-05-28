@@ -13,7 +13,7 @@ run_jobba.sh                       : set the queues and submit the jobs
 --------------------------------------------------------------------------------
 
 BEFORE YOU START YOU NEED:
-- storage space on eos
+- storage space on eos: http://eos.web.cern.ch/content/using-eos-cern
 - a valid proxy:
   > voms-proxy-init --voms cms --valid 168:00
   You should get something like:
