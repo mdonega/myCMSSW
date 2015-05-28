@@ -1,0 +1,46 @@
+
+Some instructions to run cmsRun (in this case for GEN) on lxbatch:
+
+Files:
+
+jobba.sh                           : steering script (takes care of: cmsenv, export the autentification, sets the output names used by the EGM-RunIIWinter15GS-00004_1_cfg.py)
+EGM-RunIIWinter15GS-00004_1_cfg.py : example file to generate a particle gun with PU (takes care of the random number seeds and output naming)
+run_jobba.sh                       : set the queues and submit the jobs
+
+
+First setup the release you need
+> cmsrel CMSSW_7_4_0
+> cd CMSSW_7_4_0
+> mkdir batch
+> cd batch
+
+Get the Files above and copy them in CMSSW_7_4_0/batch (or wherever you prefer)
+
+Set the number of events you want per job: 
+    process.maxEvents = cms.untracked.PSet(
+        input = cms.untracked.int32(5)
+	)
+
+Modify the user name in jobba.sh. (you will find mdonega for afs and donega for eos... don't ask it's a long story. You probably have just one account, just replace both with your $USERNAME)
+
+Done !
+
+Try one job locally:
+> jobba 1
+
+At this point it's useful to mount eos locally:
+cd ~/
+mkdir eos
+eosmount eos
+
+and check the output:
+ls /eos/cms/store/user/donega/tmp/
+
+If you got to this point you can submit the jobs on lxbatch:
+Modify  run_jobba.sh:
+- set the queue you want 
+- set the number of jobs you want here: e.g. 1000 --> for i in `seq 1 1000`; 
+
+Finally
+> run_jobba.sh
+
